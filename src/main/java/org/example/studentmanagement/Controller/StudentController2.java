@@ -12,14 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.studentmanagement.Dao.Data;
 import org.example.studentmanagement.Dao.impl.StudentStudentDataProcess;
 import org.example.studentmanagement.dto.StudentDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 //import javax.json.bind.Jsonb;
 //import javax.json.bind.JsonbBuilder;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,17 +26,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@WebServlet(urlPatterns = "/student"
-//        initParams = {
-//                @WebInitParam(name = "driver-class",value = "com.mysql.cj.jdbc.Driver"),
-//                @WebInitParam(name = "dbURL",value = "jdbc:mysql://localhost:3306/aad67JavaEE?createDatabaseIfNotExist=true"),
-//                @WebInitParam(name = "dbUserName",value = "root"),
-//                @WebInitParam(name = "dbPassword",value = "Dilan123!"),
-//        }
-,loadOnStartup = 2)
-public class StudentController extends HttpServlet {
-
-    static Logger logger = LoggerFactory.getLogger("StudentController");
+@WebServlet(urlPatterns = "/stu",
+        initParams = {
+                @WebInitParam(name = "driver-class",value = "com.mysql.cj.jdbc.Driver"),
+                @WebInitParam(name = "dbURL",value = "jdbc:mysql://localhost:3306/aad67JavaEE?createDatabaseIfNotExist=true"),
+                @WebInitParam(name = "dbUserName",value = "root"),
+                @WebInitParam(name = "dbPassword",value = "Dilan123!"),
+        }
+)
+public class StudentController2 extends HttpServlet {
 
     Connection connection;
     Data data = new StudentStudentDataProcess();
@@ -51,19 +44,18 @@ public class StudentController extends HttpServlet {
     @Override
     public void init() throws ServletException {
 
-        logger.info("Initialize StudentController with init method");
-
         System.out.println("Called");
 
         try {
+            var driverClass = getServletContext().getInitParameter("driver-class");
+            var dbUrl = getServletContext().getInitParameter("dbURL");
+            var userName = getServletContext().getInitParameter("dbUserName");
+            var password = getServletContext().getInitParameter("dbPassword");
+            Class.forName(driverClass);
 
-            InitialContext ctx = new InitialContext();
-            DataSource dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/Student-Form");
+            this.connection = DriverManager.getConnection(dbUrl,userName,password);
 
-            this.connection = dataSource.getConnection();
-
-
-        } catch (NamingException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -175,5 +167,4 @@ public class StudentController extends HttpServlet {
         }
     }
 }
-
 

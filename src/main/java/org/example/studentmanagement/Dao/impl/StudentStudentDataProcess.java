@@ -44,7 +44,7 @@ public class StudentStudentDataProcess implements Data {
         if (pstm.executeUpdate() !=0) {
             return "Saved";
         }else {
-            return "SAve Failed";
+            return "Save Failed";
         }
     }
 

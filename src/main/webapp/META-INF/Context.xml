@@ -1,0 +1,6 @@
+<Context antiJARLocking="true" path="/JNDI">
+    <Resource name="jdbc/Student-Form" auth="Container" type="javax.sql.DataSource"
+              maxActive="100" maxIdle="30" maxWait="10000"
+              username="root" password="Dilan123!" driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/aad67JavaEE?createDatabaseIfNotExist=true"/>
+</Context>
